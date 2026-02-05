@@ -87,6 +87,18 @@
       min-width: 35px;
       text-align: center;
     }
+
+    .step-buttons {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .step-btn {
+      min-width: 24px;
+      padding: 2px 6px;
+      line-height: 1;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -108,12 +120,20 @@
     <div class="control-group">
       <label>X Offset:</label>
       <input type="range" id="offsetX" min="-500" max="500" value="0">
+      <span class="step-buttons">
+        <button class="step-btn" id="offsetXDec" title="Xを-1">◀</button>
+        <button class="step-btn" id="offsetXInc" title="Xを+1">▶</button>
+      </span>
       <span class="value-display" id="offsetXValue">0</span>
     </div>
-    
+
     <div class="control-group">
       <label>Y Offset:</label>
       <input type="range" id="offsetY" min="-500" max="500" value="0">
+      <span class="step-buttons">
+        <button class="step-btn" id="offsetYDec" title="Yを-1">▲</button>
+        <button class="step-btn" id="offsetYInc" title="Yを+1">▼</button>
+      </span>
       <span class="value-display" id="offsetYValue">0</span>
     </div>
     
