@@ -31,6 +31,10 @@ const offsetXSlider = document.getElementById('offsetX');
 const offsetXValue = document.getElementById('offsetXValue');
 const offsetYSlider = document.getElementById('offsetY');
 const offsetYValue = document.getElementById('offsetYValue');
+const offsetXDecBtn = document.getElementById('offsetXDec');
+const offsetXIncBtn = document.getElementById('offsetXInc');
+const offsetYDecBtn = document.getElementById('offsetYDec');
+const offsetYIncBtn = document.getElementById('offsetYInc');
 
 function updateTransform() {
   const x = offsetXSlider.value;
@@ -43,8 +47,29 @@ function updateTransform() {
 offsetXSlider.addEventListener('input', updateTransform);
 offsetYSlider.addEventListener('input', updateTransform);
 
+function clampOffset(value, slider) {
+  const min = parseInt(slider.min, 10);
+  const max = parseInt(slider.max, 10);
+  return Math.max(min, Math.min(max, value));
+}
+
+function adjustOffset(slider, delta) {
+  const nextValue = clampOffset(parseInt(slider.value, 10) + delta, slider);
+  slider.value = nextValue;
+  updateTransform();
+}
+
+offsetXDecBtn.addEventListener('click', () => adjustOffset(offsetXSlider, -1));
+offsetXIncBtn.addEventListener('click', () => adjustOffset(offsetXSlider, 1));
+offsetYDecBtn.addEventListener('click', () => adjustOffset(offsetYSlider, -1));
+offsetYIncBtn.addEventListener('click', () => adjustOffset(offsetYSlider, 1));
+
 // iframe要素の取得
 const iframe1 = document.getElementById('iframe1');
+
+function updateInteractionMode() {
+  iframe2.style.pointerEvents = syncScrollEnabled ? 'none' : 'auto';
+}
 
 // スクロール同期トグル
 const syncScrollBtn = document.getElementById('syncScroll');
@@ -53,6 +78,7 @@ syncScrollBtn.addEventListener('click', () => {
   syncScrollEnabled = !syncScrollEnabled;
   syncScrollBtn.textContent = syncScrollEnabled ? 'Sync Scroll: ON' : 'Sync Scroll: OFF';
   syncScrollBtn.style.background = syncScrollEnabled ? 'rgba(76, 175, 80, 0.3)' : 'rgba(244, 67, 54, 0.3)';
+  updateInteractionMode();
 });
 
 // スクロール同期（wheelイベント）
@@ -102,19 +128,20 @@ document.addEventListener('keydown', (e) => {
   }
   
   // 矢印キーで微調整
-  if (e.code.startsWith('Arrow') && !e.target.matches('input, select')) {
+  if (e.code.startsWith('Arrow') && !e.target.matches('input, select, button')) {
     e.preventDefault();
     const step = e.shiftKey ? 10 : 1;
-    
+
     if (e.code === 'ArrowLeft') {
-      offsetXSlider.value = parseInt(offsetXSlider.value) - step;
+      adjustOffset(offsetXSlider, -step);
     } else if (e.code === 'ArrowRight') {
-      offsetXSlider.value = parseInt(offsetXSlider.value) + step;
+      adjustOffset(offsetXSlider, step);
     } else if (e.code === 'ArrowUp') {
-      offsetYSlider.value = parseInt(offsetYSlider.value) - step;
+      adjustOffset(offsetYSlider, -step);
     } else if (e.code === 'ArrowDown') {
-      offsetYSlider.value = parseInt(offsetYSlider.value) + step;
+      adjustOffset(offsetYSlider, step);
     }
-    updateTransform();
   }
 });
+
+updateInteractionMode();
