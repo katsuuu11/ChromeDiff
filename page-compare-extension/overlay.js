@@ -1,5 +1,4 @@
 let syncScrollEnabled = true;
-let isTopActive = false;
 
 // URLをstorageから取得してiframeにセット
 chrome.storage.local.get(['compareUrl1', 'compareUrl2'], (result) => {
@@ -44,24 +43,8 @@ function updateTransform() {
 offsetXSlider.addEventListener('input', updateTransform);
 offsetYSlider.addEventListener('input', updateTransform);
 
-// アクティブレイヤー切り替え
+// iframe要素の取得
 const iframe1 = document.getElementById('iframe1');
-const toggleBtn = document.getElementById('toggleActive');
-const activeLayerLabel = document.getElementById('activeLayer');
-
-toggleBtn.addEventListener('click', () => {
-  isTopActive = !isTopActive;
-  
-  if (isTopActive) {
-    iframe2.classList.add('active');
-    iframe1.classList.add('inactive');
-    activeLayerLabel.textContent = 'Active: Compare';
-  } else {
-    iframe2.classList.remove('active');
-    iframe1.classList.remove('inactive');
-    activeLayerLabel.textContent = 'Active: Base';
-  }
-});
 
 // スクロール同期トグル
 const syncScrollBtn = document.getElementById('syncScroll');
@@ -112,12 +95,6 @@ iframe2.style.mixBlendMode = 'normal';
 
 // キーボードショートカット
 document.addEventListener('keydown', (e) => {
-  // Spaceキーでレイヤー切り替え
-  if (e.code === 'Space' && !e.target.matches('input, select')) {
-    e.preventDefault();
-    toggleBtn.click();
-  }
-  
   // S キーでスクロール同期トグル
   if (e.code === 'KeyS' && !e.target.matches('input, select')) {
     e.preventDefault();

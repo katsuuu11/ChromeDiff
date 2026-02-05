@@ -63,23 +63,23 @@
   </style>
 </head>
 <body>
-  <h2>Page Compare Overlay</h2>
+  <h2>Staging-Production Sync Checker</h2>
   
   <div class="input-group">
-    <label for="url1">Base URL (下レイヤー)</label>
+    <label for="url1">Production URL (本番環境)</label>
     <input type="text" id="url1" placeholder="https://www.example.com/page">
   </div>
   
   <div class="input-group">
-    <label for="url2">Compare URL (上レイヤー)</label>
-    <input type="text" id="url2" placeholder="https://cms.example.com/page">
+    <label for="url2">Staging/Test URL (テスト環境)</label>
+    <input type="text" id="url2" placeholder="https://staging.example.com/page">
   </div>
   
-  <button id="openCompare">Open Compare</button>
+  <button id="openCompare">Check Sync</button>
   
   <div class="note">
-    新しいタブで比較画面を開きます。<br>
-    透過・位置調整・ブレンドモードが使えます。
+    テスト環境と本番環境を重ねて表示します。<br>
+    完全に一致していれば同期OK、ズレがあればミスが検出できます。
   </div>
   
   <script src="popup.js"></script>

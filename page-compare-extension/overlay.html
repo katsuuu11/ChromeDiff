@@ -76,18 +76,7 @@
       width: 100%;
       height: 100%;
       border: none;
-    }
-    
-    #iframe2 {
-      pointer-events: none;
-    }
-    
-    #iframe2.active {
-      pointer-events: auto;
-    }
-    
-    #iframe1.inactive {
-      pointer-events: none;
+      pointer-events: none; /* 常に透明化して直接操作を無効化 */
     }
     
     .value-display {
@@ -129,11 +118,6 @@
       <label>Y Offset:</label>
       <input type="range" id="offsetY" min="-500" max="500" value="0">
       <span class="value-display" id="offsetYValue">0</span>
-    </div>
-    
-    <div class="control-group">
-      <button id="toggleActive">Switch Active Layer</button>
-      <span id="activeLayer" style="opacity: 0.7;">Active: Base</span>
     </div>
     
     <div class="control-group">
