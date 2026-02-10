@@ -22,8 +22,17 @@ opacitySlider.addEventListener('input', (e) => {
 });
 
 // ブレンドモード
-document.getElementById('blendMode').addEventListener('change', (e) => {
-  iframe2.style.mixBlendMode = e.target.value;
+const blendToggleBtn = document.getElementById('blendToggle');
+let blendMode = 'difference';
+
+function updateBlendMode() {
+  iframe2.style.mixBlendMode = blendMode;
+  blendToggleBtn.textContent = blendMode === 'difference' ? 'Difference' : 'Normal';
+}
+
+blendToggleBtn.addEventListener('click', () => {
+  blendMode = blendMode === 'difference' ? 'normal' : 'difference';
+  updateBlendMode();
 });
 
 // X/Y オフセット
@@ -76,7 +85,7 @@ const syncScrollBtn = document.getElementById('syncScroll');
 
 syncScrollBtn.addEventListener('click', () => {
   syncScrollEnabled = !syncScrollEnabled;
-  syncScrollBtn.textContent = syncScrollEnabled ? 'Sync Scroll: ON' : 'Sync Scroll: OFF';
+  syncScrollBtn.textContent = syncScrollEnabled ? 'Fix: ON' : 'Fix: OFF';
   syncScrollBtn.style.background = syncScrollEnabled ? 'rgba(76, 175, 80, 0.3)' : 'rgba(244, 67, 54, 0.3)';
   updateInteractionMode();
 });
@@ -117,7 +126,8 @@ function sendScrollToIframe(iframe, deltaX, deltaY) {
 
 // 初期状態設定
 iframe2.style.opacity = 0.5;
-iframe2.style.mixBlendMode = 'normal';
+blendMode = 'difference';
+updateBlendMode();
 
 // キーボードショートカット
 document.addEventListener('keydown', (e) => {

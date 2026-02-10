@@ -111,14 +111,11 @@
     
     <div class="control-group">
       <label>Blend:</label>
-      <select id="blendMode">
-        <option value="normal">Normal</option>
-        <option value="difference">Difference</option>
-      </select>
+      <button id="blendToggle" type="button">Difference</button>
     </div>
     
     <div class="control-group">
-      <label>X Offset:</label>
+      <label>X:</label>
       <input type="range" id="offsetX" min="-500" max="500" value="0">
       <span class="step-buttons">
         <button class="step-btn" id="offsetXDec" title="Xを-1">◀</button>
@@ -128,7 +125,7 @@
     </div>
 
     <div class="control-group">
-      <label>Y Offset:</label>
+      <label>Y:</label>
       <input type="range" id="offsetY" min="-500" max="500" value="0">
       <span class="step-buttons">
         <button class="step-btn" id="offsetYDec" title="Yを-1">▲</button>
@@ -138,7 +135,7 @@
     </div>
     
     <div class="control-group">
-      <button id="syncScroll">Sync Scroll: ON</button>
+      <button id="syncScroll">Fix: ON</button>
     </div>
   </div>
   
