@@ -16,12 +16,31 @@
     .input-group {
       margin-bottom: 12px;
     }
+    .input-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
     label {
       display: block;
       font-size: 12px;
       font-weight: 500;
-      margin-bottom: 4px;
       color: #555;
+    }
+    .fill-current {
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #444;
+      border-radius: 4px;
+      font-size: 11px;
+      padding: 4px 8px;
+      cursor: pointer;
+      margin: 0;
+      width: auto;
+    }
+    .fill-current:hover {
+      background: #f5f5f5;
     }
     input {
       width: 100%;
@@ -64,24 +83,30 @@
 </head>
 <body>
   <h2>Staging-Production Sync Checker</h2>
-  
+
   <div class="input-group">
-    <label for="url1">Production URL (本番環境)</label>
+    <div class="input-header">
+      <label for="url1">Production URL (本番環境)</label>
+      <button type="button" class="fill-current" id="fillUrl1">現在のタブを反映</button>
+    </div>
     <input type="text" id="url1" placeholder="https://www.example.com/page">
   </div>
-  
+
   <div class="input-group">
-    <label for="url2">Staging/Test URL (テスト環境)</label>
+    <div class="input-header">
+      <label for="url2">Staging/Test URL (テスト環境)</label>
+      <button type="button" class="fill-current" id="fillUrl2">現在のタブを反映</button>
+    </div>
     <input type="text" id="url2" placeholder="https://staging.example.com/page">
   </div>
-  
+
   <button id="openCompare">Check Sync</button>
-  
+
   <div class="note">
     テスト環境と本番環境を重ねて表示します。<br>
-    完全に一致していれば同期OK、ズレがあればミスが検出できます。
+    入力中のURLは自動保存されるので、タブ移動しても消えません。
   </div>
-  
+
   <script src="popup.js"></script>
 </body>
 </html>
