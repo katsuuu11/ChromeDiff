@@ -29,16 +29,72 @@ function configureComparison(url1, url2) {
   });
 }
 
+function persistUrls(url1, url2) {
+  chrome.storage.local.set({
+    compareUrl1: url1,
+    compareUrl2: url2
+  });
+}
+
+function readCurrentInputValues() {
+  return {
+    url1: document.getElementById('url1').value.trim(),
+    url2: document.getElementById('url2').value.trim()
+  };
+}
+
+function restoreSavedUrls() {
+  chrome.storage.local.get(['compareUrl1', 'compareUrl2'], (result) => {
+    if (result.compareUrl1) {
+      document.getElementById('url1').value = result.compareUrl1;
+    }
+    if (result.compareUrl2) {
+      document.getElementById('url2').value = result.compareUrl2;
+    }
+  });
+}
+
+function setupAutoSave() {
+  const saveDraft = () => {
+    const { url1, url2 } = readCurrentInputValues();
+    persistUrls(url1, url2);
+  };
+
+  document.getElementById('url1').addEventListener('input', saveDraft);
+  document.getElementById('url2').addEventListener('input', saveDraft);
+}
+
+async function fillFromCurrentTab(targetInputId) {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+  if (!tab || !tab.url) {
+    alert('現在のタブURLを取得できませんでした。');
+    return;
+  }
+
+  if (!/^https?:\/\//.test(tab.url)) {
+    alert('http/https のページで実行してください。');
+    return;
+  }
+
+  const targetInput = document.getElementById(targetInputId);
+  targetInput.value = tab.url;
+
+  const { url1, url2 } = readCurrentInputValues();
+  persistUrls(url1, url2);
+}
+
+document.getElementById('fillUrl1').addEventListener('click', () => fillFromCurrentTab('url1'));
+document.getElementById('fillUrl2').addEventListener('click', () => fillFromCurrentTab('url2'));
+
 document.getElementById('openCompare').addEventListener('click', async () => {
-  const url1 = document.getElementById('url1').value.trim();
-  const url2 = document.getElementById('url2').value.trim();
+  const { url1, url2 } = readCurrentInputValues();
 
   if (!url1 || !url2) {
     alert('両方のURLを入力してください');
     return;
   }
 
-  // URLの検証（簡易）
   try {
     new URL(url1);
     new URL(url2);
@@ -61,26 +117,11 @@ document.getElementById('openCompare').addEventListener('click', async () => {
     return;
   }
 
-  // URLをstorageに保存してから比較ページを開く
-  chrome.storage.local.set(
-    {
-      compareUrl1: url1,
-      compareUrl2: url2
-    },
-    () => {
-      chrome.tabs.create({
-        url: chrome.runtime.getURL('overlay.html')
-      });
-    }
-  );
+  persistUrls(url1, url2);
+  chrome.tabs.create({
+    url: chrome.runtime.getURL('overlay.html')
+  });
 });
 
-// 前回の値を復元
-chrome.storage.local.get(['compareUrl1', 'compareUrl2'], (result) => {
-  if (result.compareUrl1) {
-    document.getElementById('url1').value = result.compareUrl1;
-  }
-  if (result.compareUrl2) {
-    document.getElementById('url2').value = result.compareUrl2;
-  }
-});
+restoreSavedUrls();
+setupAutoSave();
