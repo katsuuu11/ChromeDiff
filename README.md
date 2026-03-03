@@ -1,6 +1,6 @@
 # Page Compare Overlay - Chrome拡張
 
-CMSと本番サイトを重ねて比較するChrome拡張機能です。
+CMSを含むステージング環境と本番環境を重ねて比較し、公開後の差異をすばやくチェックするChrome拡張機能です。
 
 ## 機能
 
@@ -58,8 +58,8 @@ manifest.jsonから以下の行を削除してください：
 1. **拡張アイコンをクリック**してポップアップを開く
 2. **Base URL**（下レイヤー）に本番サイトのURLを入力
    例：`https://www.example.com/page`
-3. **Compare URL**（上レイヤー）にCMSのURLを入力
-   例：`https://cms.example.com/page`
+3. **Compare URL**（上レイヤー）にステージング環境（CMSを含む）のURLを入力
+   例：`https://staging.example.com/page`
 4. **「Open Compare」**ボタンをクリック
 5. 新しいタブで比較画面が開く
 

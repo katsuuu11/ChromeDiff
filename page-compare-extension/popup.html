@@ -82,7 +82,7 @@
   </style>
 </head>
 <body>
-  <h2>Staging-Production Sync Checker</h2>
+  <h2>ReleaseDiff</h2>
 
   <div class="input-group">
     <div class="input-header">
@@ -94,16 +94,16 @@
 
   <div class="input-group">
     <div class="input-header">
-      <label for="url2">Staging/Test URL (テスト環境)</label>
+      <label for="url2">Staging URL (ステージング環境)</label>
       <button type="button" class="fill-current" id="fillUrl2">現在のタブを反映</button>
     </div>
     <input type="text" id="url2" placeholder="https://staging.example.com/page">
   </div>
 
-  <button id="openCompare">Check Sync</button>
+  <button id="openCompare">Check Diff</button>
 
   <div class="note">
-    テスト環境と本番環境を重ねて表示します。<br>
+    ステージング環境と本番環境を重ねて表示します。<br>
     入力中のURLは自動保存されるので、タブ移動しても消えません。
   </div>
 

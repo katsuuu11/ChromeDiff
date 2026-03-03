@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Staging-Production Sync Checker",
+  "name": "ReleaseDiff",
   "version": "1.0.0",
-  "description": "Verify test and production environments are perfectly synchronized by overlaying pages",
+  "description": "Quickly compare staging (including CMS) and production pages after release to spot visual differences",
   "permissions": [
     "declarativeNetRequest",
     "storage",
