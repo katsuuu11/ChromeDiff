@@ -4,6 +4,10 @@ const DYNAMIC_RULE_ID = 1001;
 const CONTENT_SCRIPT_ID = 'page-compare-content-script';
 
 function drawDiffIcon(size) {
+  if (typeof OffscreenCanvas === 'undefined') {
+    return null;
+  }
+
   const canvas = new OffscreenCanvas(size, size);
   const ctx = canvas.getContext('2d');
 
@@ -89,6 +93,8 @@ function setGeneratedIcon() {
 
   if (Object.keys(imageData).length > 0) {
     chrome.action.setIcon({ imageData });
+  } else {
+    console.warn('Dynamic icon generation skipped because OffscreenCanvas is unavailable.');
   }
 }
 
