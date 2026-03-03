@@ -7,8 +7,7 @@
     "declarativeNetRequest",
     "storage",
     "scripting",
-    "tabs",
-    "permissions"
+    "tabs"
   ],
   "optional_host_permissions": [
     "http://*/*",
