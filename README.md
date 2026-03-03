@@ -16,26 +16,26 @@ CMSと本番サイトを重ねて比較するChrome拡張機能です。
 
 ### 1. アイコン画像を準備（オプション）
 
-以下のサイズのアイコンを用意してください：
-- `icon16.png` (16x16px)
-- `icon48.png` (48x48px)
-- `icon128.png` (128x128px)
+このリポジトリでは `page-compare-extension/icons/icon.png` を1枚用意すればOKです。
+`manifest.json` 側で 16/32/48/128 の各サイズに同じ画像を使う設定になっています。
 
 **アイコンがない場合の回避策：**
 manifest.jsonから以下の行を削除してください：
 ```json
 "default_icon": {
-  "16": "icon16.png",
-  "48": "icon48.png",
-  "128": "icon128.png"
+  "16": "icons/icon.png",
+  "32": "icons/icon.png",
+  "48": "icons/icon.png",
+  "128": "icons/icon.png"
 },
 ```
 および
 ```json
 "icons": {
-  "16": "icon16.png",
-  "48": "icon48.png",
-  "128": "icon128.png"
+  "16": "icons/icon.png",
+  "32": "icons/icon.png",
+  "48": "icons/icon.png",
+  "128": "icons/icon.png"
 }
 ```
 
@@ -128,9 +128,9 @@ page-compare-extension/
 ├── overlay.js            # 比較画面のロジック
 ├── content.js            # iframe内スクロール制御
 ├── background.js         # Service Worker
-├── icon16.png            # アイコン（16x16）
-├── icon48.png            # アイコン（48x48）
-└── icon128.png           # アイコン（128x128）
+└── icons/
+    ├── .gitkeep          # 空フォルダをGit管理するためのダミーファイル
+    └── icon.png          # アイコン（手動追加・1枚を各サイズに共通利用）
 ```
 
 ## セキュリティに関する注意
