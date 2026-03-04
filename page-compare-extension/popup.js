@@ -119,7 +119,8 @@ document.getElementById('openCompare').addEventListener('click', async () => {
 
   persistUrls(url1, url2);
   chrome.tabs.create({
-    url: chrome.runtime.getURL('overlay.html')
+    url: chrome.runtime.getURL('overlay.html'),
+    active: true
   });
 });
 
