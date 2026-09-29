@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ReleaseDiff",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "Quickly compare staging (including CMS) and production pages after release to spot visual differences",
   "permissions": [
     "declarativeNetRequest",
@@ -23,6 +23,7 @@
     ]
   },
   "action": {
+    "default_title": "ReleaseDiffを開く",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon.png",
