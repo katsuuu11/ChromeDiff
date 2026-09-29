@@ -87,38 +87,59 @@ syncScrollBtn.addEventListener('click', () => {
   syncScrollEnabled = !syncScrollEnabled;
   syncScrollBtn.textContent = syncScrollEnabled ? 'Fix: ON' : 'Fix: OFF';
   syncScrollBtn.style.background = syncScrollEnabled ? 'rgba(76, 175, 80, 0.3)' : 'rgba(244, 67, 54, 0.3)';
+
+  if (!syncScrollEnabled && scrollFrameId !== null) {
+    cancelAnimationFrame(scrollFrameId);
+    scrollFrameId = null;
+    pendingDeltaX = 0;
+    pendingDeltaY = 0;
+  }
+
   updateInteractionMode();
 });
 
 // スクロール同期（wheelイベント）
-let scrollTimeout;
 const container = document.getElementById('container');
+let pendingDeltaX = 0;
+let pendingDeltaY = 0;
+let scrollFrameId = null;
 
 container.addEventListener('wheel', (e) => {
   if (!syncScrollEnabled) return;
-  
+
   e.preventDefault();
-  
-  const deltaX = e.deltaX;
-  const deltaY = e.deltaY;
-  
-  // 両方のiframeにスクロールメッセージを送る
-  sendScrollToIframe(iframe1, deltaX, deltaY);
-  sendScrollToIframe(iframe2, deltaX, deltaY);
+
+  // スクロール量を捨てずに合算し、1フレームに1回だけ同期する
+  pendingDeltaX += e.deltaX;
+  pendingDeltaY += e.deltaY;
+
+  if (scrollFrameId !== null) return;
+
+  scrollFrameId = requestAnimationFrame(() => {
+    const deltaX = pendingDeltaX;
+    const deltaY = pendingDeltaY;
+
+    pendingDeltaX = 0;
+    pendingDeltaY = 0;
+    scrollFrameId = null;
+
+    if (!syncScrollEnabled) return;
+
+    // 両方のiframeに同じスクロール量を送る
+    sendScrollToIframe(iframe1, deltaX, deltaY);
+    sendScrollToIframe(iframe2, deltaX, deltaY);
+  });
 }, { passive: false });
 
 function sendScrollToIframe(iframe, deltaX, deltaY) {
   try {
-    // content scriptにメッセージを送る
-    chrome.tabs.query({}, (tabs) => {
-      // iframe内のタブを特定するのは難しいので、
-      // 代わりにpostMessageを使う（content scriptが受け取る）
-      iframe.contentWindow.postMessage({
-        type: 'SCROLL_DELTA',
-        deltaX: deltaX,
-        deltaY: deltaY
-      }, '*');
-    });
+    if (!iframe.contentWindow) return;
+
+    iframe.contentWindow.postMessage({
+      type: 'SCROLL_DELTA',
+      deltaX: deltaX,
+      deltaY: deltaY
+    }, '*');
   } catch (e) {
     // クロスオリジンの場合は失敗するが、content scriptが処理する
   }
